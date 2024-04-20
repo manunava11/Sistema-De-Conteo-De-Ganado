@@ -1,0 +1,8 @@
+path: C:\Users\Manuel\Desktop\Dataset conteo\
+train: frames_cow_id
+val: frames_cow_id
+nc: 1
+
+# Clases
+names:
+  0: cow
