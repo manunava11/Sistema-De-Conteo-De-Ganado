@@ -10,7 +10,9 @@
         <link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}">
         {% if title %}
             <title>Ganader App - {{ title }}</title>
+            <title>Ganader App - {{ title }}</title>
         {% else %}
+            <title>Ganader App</title>
             <title>Ganader App</title>
         {% endif %}
     </head>
@@ -18,7 +20,8 @@
         <header class="site-header">
             <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
                 <div class="container">
-                    <a class="navbar-brand mr-4" href="{% url 'blog-home' %}">Ganader App</a>
+                    <img src="\media\Logo Ganader Blanco-02.png" alt="Logo GanaderIA" class="mr-2" width="200px">
+                    <!--<a class="navbar-brand mr-4" href="{% url 'blog-home' %}">Django Blog</a>-->
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
