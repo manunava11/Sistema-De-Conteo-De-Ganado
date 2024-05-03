@@ -1,0 +1,11 @@
+version: "latest"
+services:
+ app:
+  build: .
+  volumes:
+   - .:/app
+  ports: 
+   - 8000:8000
+  image: app:django
+  container_name: ganader-webapp
+  command: python3 manage.py runserver 0.0.0.0:8000
