@@ -7,7 +7,7 @@ services:
   ports: 
    - 8000:8000
   image: app:django
-  container_name: ganader-webapp
+  container_name: app
   command: >
    sh -c "python3 manage.py migrate && \
           python3 manage.py runserver 0.0.0.0:8000"
