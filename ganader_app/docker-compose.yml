@@ -18,9 +18,11 @@ services:
    - DB_NAME=django-dev-db
    - DB_USER=devuser
    - DB_PASS=devpassword123
+   - CELERY_BROKER=redis://redis:6379/0
+   - CELERY_BACKEND=redis://redis:6379/0   
   depends_on:
-   database:
-    condition: service_healthy
+   - redis
+   - database
 
  database:
   image: postgres:12-alpine
@@ -46,6 +48,20 @@ services:
    - "80:80"
   depends_on:
    - app
+
+ celery:
+  build: .
+  command: celery --app=webapp worker --loglevel=info
+  volumes:
+   - ./webapp:/app
+  container_name: celery
+  depends_on:
+   - app
+   - redis
+
+ redis:
+  image: "redis:alpine"
+  container_name: redis
 
 volumes:
  db-dev-data:
