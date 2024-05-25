@@ -1,0 +1,68 @@
+version: "latest"
+services:
+ app:
+  build: .
+  volumes:
+   - ./webapp:/app
+   - static:/static
+  ports: 
+   - 8000:8000
+  image: app:django
+  container_name: app
+#  command: >
+#   sh -c "python3 manage.py migrate && \
+#          python3 manage.py runserver 0.0.0.0:8000"
+  environment:
+   - DEBUG=1
+   - DB_HOST=database
+   - DB_NAME=django-dev-db
+   - DB_USER=devuser
+   - DB_PASS=devpassword123
+   - CELERY_BROKER=redis://redis:6379/0
+   - CELERY_BACKEND=redis://redis:6379/0   
+  depends_on:
+   - redis
+   - database
+
+ database:
+  image: postgres:12-alpine
+  container_name: database
+  volumes:
+   - db-dev-data:/var/lib/postgresql/data
+  environment:
+   - POSTGRES_DB=django-dev-db
+   - POSTGRES_USER=devuser
+   - POSTGRES_PASSWORD=devpassword123
+  healthcheck:
+   test: ["CMD", "pg_isready", "-q", "-d", "django-dev-db", "-U", "devuser"]
+   interval: 5s
+   timeout: 5s
+   retries: 5
+ 
+ nginx:
+  build: ./nginx
+  volumes: 
+   - static:/static
+  container_name: nginx
+  ports:
+   - "80:80"
+  depends_on:
+   - app
+
+ celery:
+  build: .
+  command: celery --app=webapp worker --loglevel=info
+  volumes:
+   - ./webapp:/app
+  container_name: celery
+  depends_on:
+   - app
+   - redis
+
+ redis:
+  image: "redis:alpine"
+  container_name: redis
+
+volumes:
+ db-dev-data:
+ static:

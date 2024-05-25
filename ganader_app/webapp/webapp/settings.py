@@ -24,6 +24,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'changeme')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(int(os.environ.get('DEBUG',0)))
+#DEBUG = True
 
 ALLOWED_HOSTS = []
 ALLOWED_HOSTS.extend(
@@ -129,6 +130,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
+STATIC_ROOT = '/static/'
 STATIC_URL = '/static/'
 
 MEDIA_ROOT = BASE_DIR.joinpath('media')
@@ -152,3 +154,6 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'ramirososatru@gmail.com'
 EMAIL_HOST_PASSWORD = 'xzksndhpoezcozah'
+
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_BACKEND", "redis://redis:6379/0")
