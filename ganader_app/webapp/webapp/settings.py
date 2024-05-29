@@ -40,6 +40,7 @@ ALLOWED_HOSTS.extend(
 INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'users.apps.UsersConfig',
+    'ranch.apps.RanchConfig',
     'crispy_forms',
     'crispy_bootstrap4',
     'django.contrib.admin',
