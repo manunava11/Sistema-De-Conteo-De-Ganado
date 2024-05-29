@@ -12,6 +12,7 @@ def create_ranch(request):
             ranch = form.save(commit=False)
             ranch.owner = request.user
             ranch.save()
+            RanchMembership.objects.create(user=request.user, ranch=ranch)
             return redirect('ranch-detail', ranch_id=ranch.id)
     else:
             form = RanchForm()
