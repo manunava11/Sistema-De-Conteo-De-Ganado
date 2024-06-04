@@ -28,26 +28,41 @@
                     <div class="collapse navbar-collapse" id="navbarToggle">
                         <div class="navbar-nav mr-auto">
                             <a class="nav-item nav-link" href="{% url 'blog-home' %}">Home</a>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My Ranches</a>
-                                {% for ranch in user.ranches.all %}
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                        <a class="dropdown-item" href="{% url 'ranch-detail' ranch.id %}">
-                                            {{ ranch.name }}
-                                        </a>
-                                    </div>
-                                {% endfor %}
-                            </li>
+                            {% if user.is_authenticated %}
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My Ranches</a>
+                                    {% for ranch in user.ranches.all %}
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                            <a class="dropdown-item" href="{% url 'ranch-detail' ranch.id %}">
+                                                {{ ranch.name }}
+                                            </a>
+                                        </div>
+                                    {% endfor %}
+                                </li>
+                            {% endif %}
                         </div>
                         <!-- Navbar Right Side -->
                         <div class="navbar-nav">
                             {% if user.is_authenticated %}
-                                <a class="nav-item nav-link" href="{% url 'post-create' %}">Create Post</a>
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img src="{{ user.profile.image.url }}" class="rounded-circle" style="height: 30px; width: 30px;" alt="Profile Picture">
+                                    {{ user.username }} <!-- Display the username -->
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
+                                    <a class="dropdown-item" href="{% url 'create-ranch' %}">Create Ranch</a>
+                                    <a class="dropdown-divider"></a>
+                                    <form action="{% url 'logout' %}" method="post">
+                                        {% csrf_token %}
+                                        <button class="dropdown-item" type="submit">Logout</button>
+                                    </form>
+                                </div>
+                            </div>
+                                <!--<a class="nav-item nav-link" href="{% url 'post-create' %}">Create Post</a>
                                 <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
-                                <form action="{% url 'logout' %}" method="post">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-outline-light">Logout</button>
-                                </form>
+                                
+                            <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>-->
                             {% else %}
                                 <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
                                 <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
