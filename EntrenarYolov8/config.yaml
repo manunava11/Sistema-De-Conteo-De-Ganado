@@ -1,6 +1,6 @@
-path: C:\Users\Manuel\Desktop\Dataset conteo\
-train: frames_cow_id
-val: frames_cow_id
+path: C:\Users\Manuel\Desktop\
+train: Data OnlyDron
+val: Data OnlyDron
 nc: 1
 
 # Clases
