@@ -1,10 +1,17 @@
 {% extends "ranch/ranch_base.html" %}
 
-{% block content %}
-    <h1>Add Member to {{ ranch.name }}</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Add Member</button>
-    </form>
+{% load crispy_forms_tags %}
+{% block ranch_content %}
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Add a member to {{ ranch.name }}</legend>
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Add Member</button> 
+            </div>
+        </form>
+    </div>
 {% endblock %}
