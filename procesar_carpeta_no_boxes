@@ -8,8 +8,8 @@ model_path = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganad
 model = YOLO(model_path)
 
 # Carpeta de entrada y salida
-input_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\PruebasModelo\LABORATORIOS_CELU'
-output_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\PruebasModelo\SALIDA_LABORATORIOS'
+input_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\Microsules_Videos'
+output_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\Salida_Microsules'
 
 # Crear la carpeta de salida si no existe
 Path(output_folder).mkdir(parents=True, exist_ok=True)

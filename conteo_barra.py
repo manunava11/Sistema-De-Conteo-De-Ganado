@@ -3,7 +3,7 @@ import os
 from ultralytics import YOLO, solutions
 
 # Rutas de los archivos
-video_input_path = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\RecorteConteo2.MP4'
+video_input_path = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\RecorteConteo4.MP4'
 output_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado'
 
 # Cargar el modelo YOLO
@@ -17,7 +17,7 @@ assert cap.isOpened(), "Error reading video file"
 w, h, fps = (int(cap.get(x)) for x in (cv2.CAP_PROP_FRAME_WIDTH, cv2.CAP_PROP_FRAME_HEIGHT, cv2.CAP_PROP_FPS))
 
 # Definir puntos de la línea
-line_points = [(0, 1100), (2720, 1100)]
+line_points = [(0, 1400), (2720, 1400)]
 
 # Nombre del video resultante
 video_name = os.path.basename(video_input_path)
@@ -33,10 +33,11 @@ counter = solutions.ObjectCounter(
     reg_pts=line_points,
     classes_names=model.names,
     draw_tracks=False,
-    line_thickness=2,
-    track_thickness=0,
+    line_thickness=1,
+    track_thickness=2,
     view_out_counts=False,
     view_in_counts=False,
+    count_reg_color=(0,255,0),
 )
 
 # Contador total de objetos que cruzan la línea
