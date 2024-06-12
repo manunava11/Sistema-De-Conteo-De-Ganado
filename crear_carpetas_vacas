@@ -1,0 +1,16 @@
+import os
+
+# Especifica la ruta donde deseas crear las carpetas
+ruta = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\Data_Microsules'
+
+# Asegúrate de que la ruta exista
+if not os.path.exists(ruta):
+    os.makedirs(ruta)
+
+# Crear carpetas para cada vaca
+for i in range(1, 84):
+    nombre_carpeta = f'cow{i}'
+    ruta_carpeta = os.path.join(ruta, nombre_carpeta)
+    os.makedirs(ruta_carpeta, exist_ok=True)
+
+print("Carpetas creadas exitosamente.")
