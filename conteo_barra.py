@@ -3,7 +3,7 @@ import os
 from ultralytics import YOLO, solutions
 
 # Rutas de los archivos
-video_input_path = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\RecorteConteo4.MP4'
+video_input_path = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\Recorte4.MP4'
 output_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado'
 
 # Cargar el modelo YOLO
@@ -18,11 +18,12 @@ w, h, fps = (int(cap.get(x)) for x in (cv2.CAP_PROP_FRAME_WIDTH, cv2.CAP_PROP_FR
 
 # Definir puntos de la línea
 line_points = [(0, 1400), (2720, 1400)]
-
+# Define region points
+region_points = [(0, 0), (0, 1530), (2720, 1530), (2720, 0)]
 # Nombre del video resultante
 video_name = os.path.basename(video_input_path)
 output_video_name = "Conteo_Resultante_" + video_name
-
+track_buffer=300 # 300 segundos
 # Inicializar el escritor de video con la ruta de salida deseada
 output_video_path = os.path.join(output_folder, output_video_name)
 video_writer = cv2.VideoWriter(output_video_path, cv2.VideoWriter_fourcc(*"mp4v"), fps, (w, h))
@@ -30,14 +31,16 @@ video_writer = cv2.VideoWriter(output_video_path, cv2.VideoWriter_fourcc(*"mp4v"
 # Inicializar el contador de objetos
 counter = solutions.ObjectCounter(
     view_img=False,  # No mostrar la imagen
-    reg_pts=line_points,
+    # reg_pts=line_points,
+    reg_pts=region_points,
     classes_names=model.names,
     draw_tracks=False,
     line_thickness=1,
-    track_thickness=2,
+    track_thickness=1,
     view_out_counts=False,
     view_in_counts=False,
     count_reg_color=(0,255,0),
+    region_thickness=0,
 )
 
 # Contador total de objetos que cruzan la línea
@@ -51,7 +54,7 @@ while cap.isOpened():
         break
 
     # Realizar el tracking con el modelo
-    tracks = model.track(im0, persist=True, show=False, conf=0.7, tracker="bytetrack.yaml")
+    tracks = model.track(im0, persist=True, show=False, conf=0.8,iou=0.6, tracker="bytetrack.yaml")
 
     # Contar los objetos en el frame
     current_count = counter.start_counting(im0, tracks)
