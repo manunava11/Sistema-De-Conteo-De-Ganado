@@ -1,13 +1,18 @@
 import cv2
 import os
 from ultralytics import YOLO, solutions
+import torch
 
 # Rutas de los archivos
 video_input_path = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\Recorte4.MP4'
 output_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado'
 
+# Verificar si CUDA está disponible
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+print(f"Using device: {device}")
 # Cargar el modelo YOLO
-model = YOLO(os.path.join(output_folder, r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\EntrenarYolov8\SantaIsabel.pt'))
+
+model = YOLO(os.path.join(output_folder, r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\EntrenarYolov8\CeluIsabel.pt')).to(device)
 
 # Abrir el video
 cap = cv2.VideoCapture(video_input_path)
@@ -35,8 +40,8 @@ counter = solutions.ObjectCounter(
     reg_pts=region_points,
     classes_names=model.names,
     draw_tracks=False,
-    line_thickness=1,
-    track_thickness=1,
+    line_thickness=2,
+    track_thickness=2,
     view_out_counts=False,
     view_in_counts=False,
     count_reg_color=(0,255,0),

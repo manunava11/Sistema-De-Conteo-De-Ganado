@@ -2,10 +2,14 @@ import os
 import cv2
 from pathlib import Path
 from ultralytics import YOLO
+import torch 
+# Verificar si CUDA está disponible
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+print(f"Using device: {device}")
 
 # Cargar el modelo YOLOv8 entrenado (best.pt)
 model_path = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\EntrenarYolov8\SantaIsabel.pt'
-model = YOLO(model_path)
+model = YOLO(model_path).to(device)
 
 # Carpeta de entrada y salida
 input_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\Microsules_Videos'
