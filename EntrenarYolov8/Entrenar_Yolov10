@@ -1,0 +1,22 @@
+from ultralytics import YOLO
+import torch
+
+def main():
+    # Verificación de disponibilidad de CUDA
+    print("Is CUDA available: ", torch.cuda.is_available())
+    print("Number of GPUs: ", torch.cuda.device_count())
+    print("CUDA version: ", torch.version.cuda)
+    if torch.cuda.is_available():
+        print("GPU Name: ", torch.cuda.get_device_name(0))
+    else:
+        print("No CUDA GPUs are available")
+
+    # Entrenamiento del modelo
+    try:
+        model = YOLO("yolov10s.yaml")  # usa un modelo estándar de YOLOv8
+        model.train(data=r"EntrenarYolov8\config.yaml", device='cuda', cache=True, epochs=600, patience=50)
+    except Exception as e:
+        print(f"Error during training: {e}")
+
+if __name__ == '__main__':
+    main()
