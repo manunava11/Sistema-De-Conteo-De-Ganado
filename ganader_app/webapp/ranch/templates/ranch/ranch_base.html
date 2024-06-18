@@ -3,9 +3,6 @@
 {% block content %}
 <div class="container-fluid">
     <div class="row">
-        <!-- Offcanvas Sidebar (Responsive Navigation) -->
-        <!-- Sidebar Toggle Button -->
-        <!-- Sidebar Content -->
         <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu">
             <div class="offcanvas-body">
                 <div class="d-flex justify-content-between mb-4">
@@ -16,7 +13,7 @@
                 </div>
                 <ul class="list-unstyled ps-0">
                     <li class="mb-1">
-                        <a class="nav-link active" href="{% url 'ranch-detail' ranch.id %}">{{ ranch.name }}</a>
+                        <a class="nav-link" href="{% url 'ranch-detail' ranch.id %}">{{ ranch.name }}</a>
                     </li>
                     <li class="mb-1">
                         <a class="nav-link" href="">My Grazing Fields</a>
