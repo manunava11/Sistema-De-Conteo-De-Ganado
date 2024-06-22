@@ -12,11 +12,12 @@ def main():
         print("No CUDA GPUs are available")
 
     # Entrenamiento del modelo
-    try:
-        model = YOLO("yolov8s.yaml").load("EntrenarYolov8\SantaIsabel.pt")  # build from YAML and transfer weights
-        model.train(data=r"EntrenarYolov8\config.yaml", device='cuda', cache=True, epochs=600, patience=50)
-    except Exception as e:
-        print(f"Error during training: {e}")
+    #try:
+       # model = YOLO("yolov8s.yaml").load("EntrenarYolov8\SantaIsabel.pt")  # build from YAML and transfer weights
+      # print("Try")
+       # model.train(data=r"EntrenarYolov8\config.yaml", device='cuda', cache=True, epochs=600, patience=50)
+    #except Exception as e:
+        #print(f"Error during training: {e}")
 
 if __name__ == '__main__':
     main()

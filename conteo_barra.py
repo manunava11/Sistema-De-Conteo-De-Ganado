@@ -1,18 +1,20 @@
-import cv2
+import cv2 # opencv-python
 import os
-from ultralytics import YOLO, solutions
-import torch
+from ultralytics import YOLO, solutions #ultralytics
+import torch #torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
 # Rutas de los archivos
-video_input_path = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\Recorte4.MP4'
+video_input_path = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\RecorteDron.mp4'
 output_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado'
 
 # Verificar si CUDA está disponible
-device = 'cuda' if torch.cuda.is_available() else 'cpu'
+device = 'cuda' if torch.cuda.is_available() else 'cpu' # tener cuda instalado (11.8) y drivers actualizados
 print(f"Using device: {device}")
-# Cargar el modelo YOLO
-
-model = YOLO(os.path.join(output_folder, r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\EntrenarYolov8\CeluIsabel.pt')).to(device)
+#PyTorch version: 2.2.2+cu118
+#CUDA version: 11.8
+#torchvision version: 0.17.2+cu118
+#torchaudio version: 2.2.2+cu118
+model = YOLO(os.path.join(output_folder, r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\EntrenarYolov8\SantaIsabel.pt')).to(device)
 
 # Abrir el video
 cap = cv2.VideoCapture(video_input_path)
@@ -22,13 +24,13 @@ assert cap.isOpened(), "Error reading video file"
 w, h, fps = (int(cap.get(x)) for x in (cv2.CAP_PROP_FRAME_WIDTH, cv2.CAP_PROP_FRAME_HEIGHT, cv2.CAP_PROP_FPS))
 
 # Definir puntos de la línea
-line_points = [(0, 1400), (2720, 1400)]
+# line_points = [(0, 1400), (2720, 1400)]
 # Define region points
-region_points = [(0, 0), (0, 1530), (2720, 1530), (2720, 0)]
+region_points = [(0, 0), (0, h), (w, h), (w, 0)]
 # Nombre del video resultante
 video_name = os.path.basename(video_input_path)
 output_video_name = "Conteo_Resultante_" + video_name
-track_buffer=300 # 300 segundos
+track_buffer=300 # 10 segundos
 # Inicializar el escritor de video con la ruta de salida deseada
 output_video_path = os.path.join(output_folder, output_video_name)
 video_writer = cv2.VideoWriter(output_video_path, cv2.VideoWriter_fourcc(*"mp4v"), fps, (w, h))
@@ -59,7 +61,7 @@ while cap.isOpened():
         break
 
     # Realizar el tracking con el modelo
-    tracks = model.track(im0, persist=True, show=False, conf=0.8,iou=0.6, tracker="bytetrack.yaml")
+    tracks = model.track(im0, persist=True, show=False, conf=0.75,iou=0.7, tracker="bytetrack.yaml")
 
     # Contar los objetos en el frame
     current_count = counter.start_counting(im0, tracks)
