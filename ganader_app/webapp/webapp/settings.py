@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'users.apps.UsersConfig',
     'ranch.apps.RanchConfig',
+    'pastures.apps.PasturesConfig',
     'crispy_forms',
     'crispy_bootstrap4',
     'django.contrib.admin',

@@ -1,0 +1,11 @@
+{% extends "ranch/ranch_base.html" %}
+
+{% block ranch_content %}
+  <h2>Pastures</h2>
+  <a href="{% url 'add_pasture' ranch_id=request.ranch.id %}">Add New Pasture</a>
+  <ul>
+    {% for pasture in pastures %}
+      <li>{{ pasture.name }} - {{ pasture.area }}</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

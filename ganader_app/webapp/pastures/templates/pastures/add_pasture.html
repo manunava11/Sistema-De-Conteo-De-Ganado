@@ -1,0 +1,10 @@
+{% extends "ranch/ranch_base.html" %}
+
+{% block ranch_content %}
+  <h2>Add New Pasture</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+  </form>
+{% endblock %}
