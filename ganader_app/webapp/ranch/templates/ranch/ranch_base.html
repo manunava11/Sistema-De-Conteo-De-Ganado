@@ -16,7 +16,7 @@
                         <a class="nav-link" href="{% url 'ranch-detail' ranch.id %}">{{ ranch.name }}</a>
                     </li>
                     <li class="mb-1">
-                        <a class="nav-link" href="">My Pastures</a>
+                        <a class="nav-link" href="{% url 'pasture-list' ranch.id %}">My Pastures</a>
                     </li>
                     <li class="mb-1">
                         <a class="nav-link" href="">Livestock Counting</a>
@@ -27,7 +27,7 @@
                 </ul>
             </div>
         </div>
-        <div class="col-md-10">
+        <div class="col-md-9">
             {% block ranch_content %}{% endblock %}
         </div>
     </div>
