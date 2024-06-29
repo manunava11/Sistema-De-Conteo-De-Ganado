@@ -9,12 +9,12 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print(f"Using device: {device}")
 
 # Cargar el modelo YOLOv8 entrenado (best.pt) en la GPU si está disponible
-model_path = r'C:\Users\Manuel\Desktop\Carpeta Visual\PruebasModelo\SantaIsabelRetrained.pt'
+model_path = r'C:\Users\Manuel\Desktop\Carpeta Visual\PruebasModelo\POVDronModel.pt'
 model = YOLO(model_path).to(device)
 
 # Carpeta de entrada y salida
-input_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\PruebasModelo\videos'
-output_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\PruebasModelo\outputisabela'
+input_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\PruebasModelo\Videoide2'
+output_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\PruebasModelo\OutputV'
 
 # Crear la carpeta de salida si no existe
 Path(output_folder).mkdir(parents=True, exist_ok=True)

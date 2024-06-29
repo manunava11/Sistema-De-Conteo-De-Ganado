@@ -55,7 +55,7 @@ def process_videos_in_folder(input_folder, output_base_folder, interval=1):
             video_name = os.path.splitext(filename)[0]
             print("Hay un video")
             # Crear una carpeta para los frames del video
-            output_folder = os.path.join(output_base_folder, f"{video_name}_frames")
+            output_folder = os.path.join(output_base_folder, f"{video_name}_frame")
             os.makedirs(output_folder, exist_ok=True)
             print(f"Procesando video: {video_path}")
 
@@ -69,8 +69,8 @@ def process_videos_in_folder(input_folder, output_base_folder, interval=1):
         print(f"Se procesaron {videos_procesados} videos.")
 
 # Ejemplo de uso:
-input_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\Salida_Microsules'
-output_base_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\Frames_Microsules'
-interval = 0.5  # Intervalo en segundos
+input_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\OutputDia1'
+output_base_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\FramesDia1'
+interval = 0.2  # Intervalo en segundos
 
 process_videos_in_folder(input_folder, output_base_folder, interval)

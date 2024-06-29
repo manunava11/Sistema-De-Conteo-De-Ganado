@@ -8,12 +8,12 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print(f"Using device: {device}")
 
 # Cargar el modelo YOLOv8 entrenado (best.pt)
-model_path = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\EntrenarYolov8\SantaIsabel.pt'
+model_path = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\EntrenarYolov8\POVDronModel.pt'
 model = YOLO(model_path).to(device)
 
 # Carpeta de entrada y salida
-input_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\Microsules_Videos'
-output_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\Salida_Microsules'
+input_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\Dia1Isabel'
+output_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\OutputDia1'
 
 # Crear la carpeta de salida si no existe
 Path(output_folder).mkdir(parents=True, exist_ok=True)
