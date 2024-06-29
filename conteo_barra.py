@@ -4,7 +4,7 @@ from ultralytics import YOLO, solutions #ultralytics
 import torch #torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
 # Rutas de los archivos
-video_input_path = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\RecorteDron.mp4'
+video_input_path = r'C:\Users\Manuel\Desktop\Carpeta Visual\Videoide2\DJI_0264.MP4'
 output_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado'
 
 # Verificar si CUDA está disponible
@@ -14,7 +14,7 @@ print(f"Using device: {device}")
 #CUDA version: 11.8
 #torchvision version: 0.17.2+cu118
 #torchaudio version: 2.2.2+cu118
-model = YOLO(os.path.join(output_folder, r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\EntrenarYolov8\SantaIsabel.pt')).to(device)
+model = YOLO(os.path.join(output_folder, r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\EntrenarYolov8\POVDronModel.pt')).to(device)
 
 # Abrir el video
 cap = cv2.VideoCapture(video_input_path)
@@ -61,7 +61,7 @@ while cap.isOpened():
         break
 
     # Realizar el tracking con el modelo
-    tracks = model.track(im0, persist=True, show=False, conf=0.75,iou=0.7, tracker="bytetrack.yaml")
+    tracks = model.track(im0, persist=True, show=False, conf=0.7,iou=0.4, tracker="bytetrack.yaml")
 
     # Contar los objetos en el frame
     current_count = counter.start_counting(im0, tracks)

@@ -1,6 +1,6 @@
 path: C:\Users\Manuel\Desktop\
-train: Data OnlyDron
-val: Data OnlyDron
+train: OnlyDron26-6
+val: OnlyDron26-6
 nc: 1
 
 # Clases
