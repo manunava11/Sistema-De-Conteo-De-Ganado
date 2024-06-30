@@ -21,6 +21,7 @@ class Lot(models.Model):
     )
     cow_count = models.IntegerField(default=0)
     ranch = models.ForeignKey(Ranch, on_delete=models.CASCADE)
+    pasture = models.ForeignKey(Pasture, null=True, blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.name

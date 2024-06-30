@@ -1,17 +1,46 @@
 {% extends "ranch/ranch_base.html" %}
 
 {% block ranch_content %}
-  <div class="mb-3"> <!-- Added a margin-bottom to separate the list from the button -->
-    <ul class="list-group">
-        {% for pasture in pastures %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <div class="d-flex flex-row align-items-center">
-                    <span class="ml-2">{{ pasture.name }}</span>
+<ul class="list-group">
+    {% for pasture in pastures %}
+    <li class="list-group-item">
+        {{ pasture.name }}
+        <small class="text-muted">{{ pasture.area }} Ha.</small>
+
+        {% if pasture.lot_set.exists %}
+        <div>
+            <p>Lot: {{ pasture.lot_set.first.name }}</p>
+            <p>Cow Count: {{ pasture.lot_set.first.cow_count }}</p>
+        </div>
+        <button type="button" class="btn btn-outline-info mt-2" data-bs-toggle="modal" data-bs-target="#changeLotModal{{ pasture.id }}">
+            Change Lot
+        </button>
+        {% else %}
+        <button type="button" class="btn btn-outline-info mt-2" data-bs-toggle="modal" data-bs-target="#addLotModal{{ pasture.id }}">
+            Add Lot
+        </button>
+        {% endif %}
+
+        <!-- Simplified Modal for adding/changing lot -->
+        <div class="modal fade" id="addLotModal{{ pasture.id }}" tabindex="-1" aria-labelledby="addLotModalLabel{{ pasture.id }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addLotModalLabel{{ pasture.id }}">Add/Change Lot for {{ pasture.name }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="{% url 'pasture-list' ranch_id=ranch.id %}">
+                            {% csrf_token %}
+                            {{ form.lot_id }}
+                            <input type="hidden" name="pasture_id" value="{{ pasture.id }}">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
+                    </div>
                 </div>
-                <small class="text-muted">Pasture size {{ pasture.area }} Ha.</small>
-            </li>
-        {% endfor %}
-    </ul>
-</div>
-<a href="{% url 'add-pasture' ranch_id=ranch.id %}">Add New Pasture</a>
+            </div>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
 {% endblock %}
