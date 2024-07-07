@@ -8,12 +8,12 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print(f"Using device: {device}")
 
 # Cargar el modelo YOLOv8 entrenado (best.pt)
-model_path = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\EntrenarYolov8\POVDronModel.pt'
+model_path = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\EntrenarYolov8\PesadaIsa.pt'
 model = YOLO(model_path).to(device)
 
 # Carpeta de entrada y salida
-input_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\Dia1Isabel'
-output_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\OutputDia1'
+input_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\Dia1IsabelVideos'
+output_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\VideosRecortadosDia1Isabel'
 
 # Crear la carpeta de salida si no existe
 Path(output_folder).mkdir(parents=True, exist_ok=True)
@@ -34,7 +34,7 @@ for file_name in files:
         results = model(resized_image)
         for result in results:
             # Filtrar las detecciones con una confianza mayor a 0.8
-            filtered_boxes = [box for box in result.boxes if box.conf > 0.8]
+            filtered_boxes = [box for box in result.boxes if box.conf > 0.6]
             if filtered_boxes:
                 output_image_path = os.path.join(output_folder, file_name)
                 cv2.imwrite(output_image_path, resized_image)
@@ -57,7 +57,7 @@ for file_name in files:
             results = model(resized_frame)
             for result in results:
                 # Filtrar las detecciones con una confianza mayor a 0.8
-                filtered_boxes = [box for box in result.boxes if box.conf > 0.8]
+                filtered_boxes = [box for box in result.boxes if box.conf > 0.6]
                 if filtered_boxes:
                     out.write(resized_frame)
         video_capture.release()

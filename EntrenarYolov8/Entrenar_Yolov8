@@ -8,17 +8,17 @@ def main():
     print("CUDA version: ", torch.version.cuda)
     if torch.cuda.is_available():
         print("GPU Name: ", torch.cuda.get_device_name(0))
-       # torch.backends.cudnn.enabled = False # Si no me tira NAN
+        torch.backends.cudnn.enabled = False # Si no me tira NAN
     else:
         print("No CUDA GPUs are available")
 
     # Entrenamiento del modelo
     try:
-        model = YOLO("yolov8s.yaml")  # build a new model from scratch
+        #model = YOLO("yolov8m.yaml")  # build a new model from scratch
         #model = YOLO("EntrenarYolov8\SantaIsabel.pt")  # load a pretrained model (recommended for training)
-        #model = YOLO(r"yolov8s.yaml").load(r"Sistema-De-Conteo-De-Ganado\EntrenarYolov8\SantaIsabel.pt")  # build from YAML and transfer weights
-        print("Modelo Cargado")
-        model.train(data=r"C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\EntrenarYolov8\config.yaml",device='cuda', epochs=500, patience=30)
+        model = YOLO(r"yolov8m.yaml").load(r"Sistema-De-Conteo-De-Ganado\EntrenarYolov8\lastYolov8m.pt")  # build from YAML and transfer weights
+        #results = model.train(resume=True)
+        model.train(data=r"C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\EntrenarYolov8\config.yaml",batch=0.9,device='cuda', epochs=200, patience=50)
     except Exception as e:
         print(f"Error during training: {e}")
 
