@@ -13,15 +13,24 @@ def pasture_list(request, ranch_id):
         if form.is_valid():
             lot_id = form.cleaned_data['lot_id'].id
             pasture_id = request.POST.get('pasture_id')
-            lot = get_object_or_404(Lot, id=lot_id)
-            lot.pasture_id = pasture_id
-            lot.save()
+            new_lot = get_object_or_404(Lot, id=lot_id)
+            pasture = get_object_or_404(Pasture, id=pasture_id)
+
+            # Free the current lot assigned to this pasture if exists
+            if pasture.lot_set.exists():
+                current_lot = pasture.lot_set.first()
+                current_lot.pasture = None
+                current_lot.save()
+
+            # Assign the new lot to the pasture
+            new_lot.pasture = pasture
+            new_lot.save()
+
             return redirect('pasture-list', ranch_id=ranch_id)
     else:
         form = LotSelectionForm()
 
     return render(request, 'pastures/pasture_list.html', {'pastures': pastures, 'form': form, 'available_lots': available_lots, 'ranch': ranch})
-
 def add_pasture(request, ranch_id):
     ranch = get_object_or_404(Ranch, id=ranch_id)
     if request.method == 'POST':

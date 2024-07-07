@@ -8,11 +8,4 @@ class PastureForm(forms.ModelForm):
         fields = ['name', 'area']
 
 class LotSelectionForm(forms.Form):
-    #lot_id = forms.ModelChoiceField(queryset=Lot.objects.filter(pasture__isnull=True), label="Available Lots")
-    #lot_id = forms.ModelChoiceField(queryset=Lot.objects.all(), to_field_name='id', label='Select Lot')
-    #lot_id = forms.ModelChoiceField(queryset=Lot.objects.filter(pasture__isnull=True), to_field_name='id', label='Select Lot')
-    lot_id = forms.ModelChoiceField(
-        queryset=Lot.objects.filter(pasture__isnull=True),
-        to_field_name='id',
-        label='Select Lot'
-    )
+    lot_id = forms.ModelChoiceField(queryset=Lot.objects.all(), label='Select Lot')
