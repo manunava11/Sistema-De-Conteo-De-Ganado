@@ -3,41 +3,47 @@
 {% block content %}
 <div class="container-fluid">
     <div class="row">
-        <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu">
-            <div class="offcanvas-body">
-                <div class="d-flex justify-content-between mb-4">
-                    <h5 class="pt-2 pr-2">Ranch Management</h5>
-                    <button class="btn btn-outline-primary" type="button" id="sidebarToggle" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle sidebar">
-                        &#9776;
-                    </button>
+        <div class="col-1">
+            <button class="btn btn-outline-primary" type="button" id="sidebarToggle">
+                &#9776;
+            </button>
+                <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title">Ranch Management</h5>
+                        <button class="btn-close text-reset" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <ul class="list-unstyled">
+                            <li class="mb-1">
+                                <a class="nav-link" href="{% url 'ranch-detail' ranch.id %}">{{ ranch.name }}</a>
+                            </li>
+                            <li class="mb-1">
+                                <a class="nav-link" href="{% url 'pasture-list' ranch.id %}">My Pastures</a>
+                            </li>
+                            <li class="mb-1">
+                                <a class="nav-link" href="{% url 'lot-list' ranch.id %}">My Lots</a>
+                            </li>
+                            <li class="mb-1">
+                                <a class="nav-link" href="">Stats</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <ul class="list-unstyled ps-0">
-                    <li class="mb-1">
-                        <a class="nav-link" href="{% url 'ranch-detail' ranch.id %}">{{ ranch.name }}</a>
-                    </li>
-                    <li class="mb-1">
-                        <a class="nav-link" href="{% url 'pasture-list' ranch.id %}">My Pastures</a>
-                    </li>
-                    <li class="mb-1">
-                        <a class="nav-link" href="{% url 'lot-list' ranch.id %}">My Lots</a>
-                    </li>
-                    <li class="mb-1">
-                        <a class="nav-link" href="">Stats</a>
-                    </li>
-                </ul>
-            </div>
         </div>
         <div class="col-md-9">
             {% block ranch_content %}{% endblock %}
         </div>
     </div>
 </div>
+
 <script>
+    // Initialize Bootstrap 5 offcanvas behavior
+    var sidebar = new bootstrap.Offcanvas(document.getElementById('sidebarMenu'));
+
+    // Toggle offcanvas sidebar when button is clicked
     const sidebarToggle = document.getElementById('sidebarToggle');
-    const sidebar = document.getElementById('sidebarMenu');
-  
-    sidebarToggle.addEventListener('click', function() {
-      sidebar.classList.toggle('show');
+    sidebarToggle.addEventListener('click', function () {
+        sidebar.toggle();
     });
 </script>
 {% endblock %}
