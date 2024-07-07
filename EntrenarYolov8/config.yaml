@@ -1,6 +1,6 @@
-path: C:\Users\Manuel\Desktop\
-train: OnlyDron26-6
-val: OnlyDron26-6
+path: C:\Users\Manuel\Desktop\CarpetaNuevoTrainVal
+train: train
+val: val
 nc: 1
 
 # Clases
