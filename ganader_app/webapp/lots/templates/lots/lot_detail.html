@@ -13,16 +13,22 @@
       <p class="card-text">Category: {{ lot.get_livestock_category_display }}</p>
       <p class="card-text">Cow Count: {{ lot.cow_count }}</p>
       <div class="flex-row pt-2">
-        <a href="" class="btn btn-success">Manual Count</a>
-        <a href="" class="btn btn-success">Upload Video</a>
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateCountModal{{ lot.id }}">
+          Update Count
+        </button>
       </div>
     </div>
   </div>
   <h5 class="pt-3">Count History</h5>
   <ul>
-    {% for history in lot.count_history.all %}
-      <li>{{ history.date }} - {{ history.cow_count }} cows (Pasture: {{ history.pasture.name }}, Method: {{ history.method }})</li>
-    {% endfor %}
+    {% if count_history %}
+      <div>
+        <h3>Last Count:</h3>
+        <p>Date: {{ count_history.count_date }}</p>
+        <p>Cow Count: {{ count_history.cow_count }}</p>
+        <p>Method: {{ count_history.method }}</p>
+      </div>
+    {% endif %}
   </ul>  
 
     <!-- Edit/Delete Lot Modal -->
@@ -47,4 +53,39 @@
           </div>
       </div>
     </div>
+
+  <!-- Change Cow Count Modal -->
+<div class="modal fade" id="updateCountModal{{ lot.id }}" tabindex="-1" aria-labelledby="updateCountModalLabel{{ lot.id }}" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="countModalLabel{{ lot.id }}">Change Cow Count for {{ lot.name }}</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <form method="post" action="{% url 'update-count' ranch_id=ranch.id lot_id=lot.id %}" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <input type="hidden" name="lot_id" value="{{ lot.id }}">
+                  <input type="hidden" name="pasture_id" value="{{ lot.pasture.id }}">
+                  <div class="mb-3">
+                      <label for="date" class="form-label">Date</label>
+                      <input type="date" class="form-control" id="date" name="date" value="{{ now|date:'Y-m-d' }}">
+                  </div>
+                  <div class="mb-3">
+                      <label for="cow_count" class="form-label">Cow Count</label>
+                      <input type="number" class="form-control" id="cow_count" name="cow_count">
+                  </div>
+                  <div class="mb-3">
+                      <label for="video_file" class="form-label">Upload Video</label>
+                      <input type="file" class="form-control" id="video_file" name="video_file">
+                  </div>
+                  <div class="d-flex justify-content-between">
+                      <button type="submit" class="btn btn-success">Submit</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
+
 {% endblock %}
