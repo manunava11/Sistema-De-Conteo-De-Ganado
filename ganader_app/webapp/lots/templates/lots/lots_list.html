@@ -10,7 +10,7 @@
                         <a href="{% url 'lot-detail' ranch_id=ranch.id lot_id=lot.id %}">{{ lot.name }}</a>
                     </span>
                 </div>
-                <small>{{ lot.livestock_category }}</small>
+                <small>{{ lot.get_livestock_category_display }}</small>
                 <small class="text-muted">Lot count {{ lot.cow_count }}</small>
             </li>
         {% endfor %}

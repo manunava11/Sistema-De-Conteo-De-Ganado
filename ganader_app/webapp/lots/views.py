@@ -31,6 +31,7 @@ def lot_detail(request, ranch_id, lot_id):
     # Initialize forms
     manual_count_form = ManualCountForm()
     video_upload_form = VideoUploadForm()
+    lot_form = LotForm(instance=lot)
 
     if request.method == 'POST':
         if 'cow_count' in request.POST:
@@ -61,7 +62,32 @@ def lot_detail(request, ranch_id, lot_id):
         'count_history': count_history,
         'manual_count_form': manual_count_form,
         'video_upload_form': video_upload_form,
+        'form': lot_form,  # Add the form to the context
         'ranch': ranch,  # Add ranch to context
+    }
+
+    return render(request, 'lots/lot_detail.html', context)
+
+def edit_delete_lot(request, ranch_id, lot_id):
+    lot = get_object_or_404(Lot, id=lot_id)
+    ranch = get_object_or_404(Ranch, id=ranch_id)
+
+    if request.method == 'POST':
+        if request.POST.get('delete') == 'true':
+            lot.delete()
+            return redirect('lot-list', ranch.id)
+        else:
+            form = LotForm(request.POST, instance=lot)
+            if form.is_valid():
+                form.save()
+                return redirect('lot-detail', ranch.id, lot.id)
+    else:
+        form = LotForm(instance=lot)
+
+    context = {
+        'form': form,
+        'lot': lot,
+        'ranch': ranch
     }
 
     return render(request, 'lots/lot_detail.html', context)
