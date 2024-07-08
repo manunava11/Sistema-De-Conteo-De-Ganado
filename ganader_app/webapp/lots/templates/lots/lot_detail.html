@@ -1,0 +1,20 @@
+{% extends "ranch/ranch_base.html" %}
+
+{% block ranch_content %}
+  <h2>{{ lot.name }}</h2>
+  <p>Livestock Category: {{ lot.livestock_category }}</p>
+  <p>Cow Count: {{ lot.cow_count }}</p>
+
+  <h3>Count History</h3>
+  <ul>
+    {% for history in lot.count_history.all %}
+      <li>{{ history.date }} - {{ history.cow_count }} cows (Pasture: {{ history.pasture.name }}, Method: {{ history.method }})</li>
+    {% endfor %}
+  </ul>
+
+  <h3>Manual Count</h3>
+  <a href="" class="btn btn-success">Manual Count</a>
+
+  <h3>Upload Video</h3>
+  <a href="" class="btn btn-success">Upload Video</a>
+{% endblock %}

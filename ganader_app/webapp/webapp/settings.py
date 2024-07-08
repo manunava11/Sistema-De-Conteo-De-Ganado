@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'ranch.apps.RanchConfig',
     'pastures.apps.PasturesConfig',
     'lots.apps.LotsConfig',
+    'cattle_countings.apps.CattleCountingsConfig',
     'crispy_forms',
     'crispy_bootstrap4',
     'django.contrib.admin',

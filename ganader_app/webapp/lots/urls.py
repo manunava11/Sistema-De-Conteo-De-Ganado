@@ -4,4 +4,5 @@ from. import views
 urlpatterns = [
     path('', views.lot_list, name='lot-list'),
     path('add/', views.add_lot, name='add-lot'),
+    path('<int:lot_id>/', views.lot_detail, name='lot-detail')
 ]

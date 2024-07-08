@@ -1,26 +1,37 @@
 {% extends "ranch/ranch_base.html" %}
 
 {% block ranch_content %}
+
 <ul class="list-group">
     {% for pasture in pastures %}
-    <li class="list-group-item">
-        {{ pasture.name }}
-        <small class="text-muted">{{ pasture.area }} Ha.</small>
-
-        {% if pasture.lot_set.exists %}
-        <div>
-            <p>Lot: {{ pasture.lot_set.first.name }}</p>
-            <p>Cow Count: {{ pasture.lot_set.first.cow_count }}</p>
+    <div class="card mb-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div>
+                <h4 class="card-title mb-0">{{ pasture.name }}</h4>
+                <small class="text-muted">{{ pasture.area }} Ha.</small>
+            </div>
+            <div>
+                {% if pasture.lot_set.exists %}
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#changeLotModal{{ pasture.id }}">
+                    Change Lot
+                </button>
+                {% else %}
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addLotModal{{ pasture.id }}">
+                    Add Lot
+                </button>
+                {% endif %}
+            </div>
         </div>
-        <button type="button" class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#changeLotModal{{ pasture.id }}">
-            Change Lot
-        </button>
-        {% else %}
-        <button type="button" class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#addLotModal{{ pasture.id }}">
-            Add Lot
-        </button>
+        {% if pasture.lot_set.exists %}
+        <div class="card-body">
+            <h5 class="card-title">
+                <a href="{% url 'lot-detail' ranch_id=ranch.id lot_id=pasture.lot_set.first.id %}" class="text-decoration-none">{{ pasture.lot_set.first.name }}</a>
+            </h5>
+            <p class="card-text">Category: {{ pasture.lot_set.first.get_livestock_category_display }}</p>
+            <p class="card-text">Last Count: {{ pasture.lot_set.first.cow_count }}</p>
+        </div>
         {% endif %}
-
+    </div>
         <!-- Modal for adding lot -->
         <div class="modal fade" id="addLotModal{{ pasture.id }}" tabindex="-1" aria-labelledby="addLotModalLabel{{ pasture.id }}" aria-hidden="true">
             <div class="modal-dialog">
@@ -60,7 +71,6 @@
                 </div>
             </div>
         </div>
-    </li>
     {% endfor %}
 </ul>
 <div class="mt-3">

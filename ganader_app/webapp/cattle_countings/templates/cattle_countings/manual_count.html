@@ -1,0 +1,10 @@
+{% extends "ranch/ranch_base.html" %}
+
+{% block ranch_content %}
+  <h2>Manual Count for {{ lot.name }}</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Submit</button>
+  </form>
+{% endblock %}
