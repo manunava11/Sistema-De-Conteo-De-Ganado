@@ -4,7 +4,7 @@ from ultralytics import YOLO, solutions #ultralytics
 import torch #torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
 # Rutas de los archivos
-video_input_path = r'C:\Users\Manuel\Desktop\Carpeta Visual\Videoide\DJI_0264.MP4'
+video_input_path = r'C:\Users\Manuel\Desktop\Carpeta Visual\RecorteDron.MP4'
 output_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado'
 
 # Verificar si CUDA está disponible
@@ -67,8 +67,11 @@ while cap.isOpened():
     current_count = counter.start_counting(im0, tracks)
     total_count = counter.in_counts + counter.out_counts
     text = f'Conteo total: {total_count}'
-    cv2.putText(im0, text, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
-
+    text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 1, 2)[0]
+    text_x, text_y = 50, 50
+    # Rectangulo blanco atras del texto
+    cv2.rectangle(im0, (text_x - 5, text_y + 5), (text_x + text_size[0] + 5, text_y - text_size[1] - 5), (255, 255, 255), cv2.FILLED)
+    cv2.putText(im0, text, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 1, (44, 110, 47), 2, cv2.LINE_AA)
     # Escribir el frame procesado en el video de salida
     video_writer.write(im0)
 
