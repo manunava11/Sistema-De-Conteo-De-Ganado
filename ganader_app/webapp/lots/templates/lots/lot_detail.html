@@ -1,91 +1,85 @@
 {% extends "ranch/ranch_base.html" %}
 
+{% load crispy_forms_tags %}
 {% block ranch_content %}
-
-  <div class="card">
+<div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
-      <h5>{{ lot.name }}</h5>
-      <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editLotModal{{ lot.id }}">
-        Edit Lot
-      </button>
+        <h5>{{ lot.name }}</h5>
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editLotModal{{ lot.id }}">
+            Edit Lot
+        </button>
     </div>
     <div class="card-body">
-      <p class="card-text">Category: {{ lot.get_livestock_category_display }}</p>
-      <p class="card-text">Cow Count: {{ lot.cow_count }}</p>
-      <div class="flex-row pt-2">
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateCountModal{{ lot.id }}">
-          Update Count
-        </button>
+        <p class="card-text">Category: {{ lot.get_livestock_category_display }}</p>
+        <p class="card-text">Pasture: {{ lot.pasture.name }}</p>
+        <p class="card-text">Cow Count: {{ latest_cow_count }}</p>
+        <div class="flex-row pt-2">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateCountModal{{ lot.id }}">
+                Update Count
+            </button>
+        </div>
+    </div>
+</div>
+
+<h5 class="mt-2">Count History</h5>
+{% if lot_cow_count %}
+  {% for count in lot_cow_count %}
+    <div class="card mt-1">
+      <div class="card-body">
+        <p class="card-text">Cow Count: {{ count.cow_count }}</p>
+        <p class="card-text">{{ count.method }}</p>
+        <p class="card-text">{{ count.pasture.name }}</p>
+        <p class="card-text">Comentarios: {{ count.comment }}</p>
+        <p class="card-text"><small class="text-body-secondary">Actualizacion: {{ count.date }}</small></p>
       </div>
     </div>
-  </div>
-  <h5 class="pt-3">Count History</h5>
-  <ul>
-    {% if count_history %}
-      <div>
-        <h3>Last Count:</h3>
-        <p>Date: {{ count_history.count_date }}</p>
-        <p>Cow Count: {{ count_history.cow_count }}</p>
-        <p>Method: {{ count_history.method }}</p>
-      </div>
-    {% endif %}
-  </ul>  
-
-    <!-- Edit/Delete Lot Modal -->
-    <div class="modal fade" id="editLotModal{{ lot.id }}" tabindex="-1" aria-labelledby="editLotModalLabel{{ lot.id }}" aria-hidden="true">
-      <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title" id="editLotModalLabel{{ lot.id }}">Edit/Delete Lot {{ lot.name }}</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                  <form method="post" action="{% url 'edit-delete-lot' ranch_id=ranch.id lot_id=lot.id %}">
-                      {% csrf_token %}
-                      {{ form.as_p }}
-                      <input type="hidden" name="delete" id="deleteInput{{ lot.id }}" value="false">
-                      <div class="d-flex justify-content-between">
+  {% endfor %}
+{% else %}
+  <div class="card mt-1"><div class="card-body">No count history available.</div></div>
+{% endif %}
+<!-- Edit/Delete Lot Modal -->
+<div class="modal fade" id="editLotModal{{ lot.id }}" tabindex="-1" aria-labelledby="editLotModalLabel{{ lot.id }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editLotModalLabel{{ lot.id }}">Edit/Delete Lot {{ lot.name }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'edit-delete-lot' ranch_id=ranch.id lot_id=lot.id %}">
+                    {% csrf_token %}
+                    {{ lot_form|crispy }}
+                    <input type="hidden" name="delete" id="deleteInput{{ lot.id }}" value="false">
+                    <div class="d-flex justify-content-between mt-2">
                         <button type="submit" class="btn btn-success">Save</button>
                         <button type="button" class="btn btn-danger" onclick="document.getElementById('deleteInput{{ lot.id }}').value='true'; this.closest('form').submit();">Delete</button>
-                      </div>
-                  </form>
-              </div>
-          </div>
-      </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
+</div>
 
-  <!-- Change Cow Count Modal -->
+<!-- Change Cow Count Modal -->
 <div class="modal fade" id="updateCountModal{{ lot.id }}" tabindex="-1" aria-labelledby="updateCountModalLabel{{ lot.id }}" aria-hidden="true">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title" id="countModalLabel{{ lot.id }}">Change Cow Count for {{ lot.name }}</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-              <form method="post" action="{% url 'update-count' ranch_id=ranch.id lot_id=lot.id %}" enctype="multipart/form-data">
-                  {% csrf_token %}
-                  <input type="hidden" name="lot_id" value="{{ lot.id }}">
-                  <input type="hidden" name="pasture_id" value="{{ lot.pasture.id }}">
-                  <div class="mb-3">
-                      <label for="date" class="form-label">Date</label>
-                      <input type="date" class="form-control" id="date" name="date" value="{{ now|date:'Y-m-d' }}">
-                  </div>
-                  <div class="mb-3">
-                      <label for="cow_count" class="form-label">Cow Count</label>
-                      <input type="number" class="form-control" id="cow_count" name="cow_count">
-                  </div>
-                  <div class="mb-3">
-                      <label for="video_file" class="form-label">Upload Video</label>
-                      <input type="file" class="form-control" id="video_file" name="video_file">
-                  </div>
-                  <div class="d-flex justify-content-between">
-                      <button type="submit" class="btn btn-success">Submit</button>
-                  </div>
-              </form>
-          </div>
-      </div>
-  </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="countModalLabel{{ lot.id }}">Update Count for {{ lot.name }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'lot-detail' ranch_id=ranch.id lot_id=lot.id %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ manual_count_form|crispy }}
+                    <div class="d-flex justify-content-between mt-2">
+                        <button type="submit" name="manual_count" class="btn btn-success">Submit Manual Count</button>
+                        <button type="submit" name="upload_video" class="btn btn-success">Submit Video</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 {% endblock %}

@@ -13,8 +13,10 @@ def video_upload(request, lot_id):
             video_upload.lot = lot
             video_upload.save()
             # Process the video file here
-            process_video(video_upload)
-            return redirect('lot-detail', lot_id=lot.id)
+            cow_count = process_video(video_upload)
+            lot.cow_count = cow_count
+            lot.save()
+            return redirect('lot-detail', ranch_id=lot.ranch.id, lot_id=lot.id)
     else:
         form = VideoUploadForm()
     return render(request, 'counts/video_upload.html', {'form': form, 'lot': lot})
@@ -26,21 +28,21 @@ def manual_count(request, lot_id):
         if form.is_valid():
             manual_count = form.save(commit=False)
             manual_count.method = 'manual'
+            manual_count.lot = lot
+            manual_count.pasture = lot.pasture
             manual_count.save()
-            return redirect('lot-detail', lot_id=lot.id)
+            lot.cow_count = manual_count.cow_count
+            lot.save()
+            return redirect('lot-detail', ranch_id=lot.ranch.id, lot_id=lot.id)
     else:
         form = ManualCountForm(initial={'lot': lot})
     return render(request, 'counts/manual_count.html', {'form': form, 'lot': lot})
 
 def process_video(video_upload):
-    # Implement your video processing logic here
-    # Example: Use OpenCV to count cows in the video
     video_path = video_upload.video.path
-    cap = cv2.VideoCapture(video_path)
-    cow_count = 0
-    # Your processing logic to count cows
+    # Implement your video processing logic here to count cows
+    cow_count = 0  # Replace this with the actual cow counting logic
 
-    # Assuming you have the cow_count after processing
     lot = video_upload.lot
     pasture = lot.pasture
 
@@ -50,6 +52,10 @@ def process_video(video_upload):
         cow_count=cow_count,
         method='video'
     )
+
+    # Update lot's cow count
+    lot.cow_count = cow_count
+    lot.save()
 
     video_upload.processed = True
     video_upload.save()

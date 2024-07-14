@@ -1,12 +1,12 @@
 from django import forms
-from .models import VideoUpload, CountHistory
+from .models import CowCount
 
 class VideoUploadForm(forms.ModelForm):
     class Meta:
-        model = VideoUpload
-        fields = ['lot', 'video']
+        model = CowCount
+        fields = []
 
 class ManualCountForm(forms.ModelForm):
     class Meta:
-        model = CountHistory
-        fields = ['lot', 'cow_count']
+        model = CowCount
+        fields = ['cow_count','date', 'comment']
