@@ -1,7 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Lot, Ranch
 from cattle_countings.models import CowCount
-
 from .forms import LotForm, CowCountForm
 from cattle_countings.forms import ManualCountForm, VideoUploadForm
 from datetime import datetime
@@ -11,8 +10,13 @@ from datetime import datetime
 def lot_list(request, ranch_id):
     ranch = get_object_or_404(Ranch, id=ranch_id)
     lots = Lot.objects.filter(ranch_id=ranch_id)
-    latest_cow_count = CowCount.objects.filter(lot=lot).latest('date').cow_count
-    return render(request, 'lots/lots_list.html', {'lots': lots, 'ranch': ranch, 'latest_cow_count': latest_cow_count})
+    lots_tuple = []
+    for lot in lots:
+        latest_cow_count = CowCount.objects.filter(lot=lot).latest('date').cow_count
+        lot_data = (lot, latest_cow_count)
+        lots_tuple.append(lot_data)
+
+    return render(request, 'lots/lots_list.html', {'lots_tuple': lots_tuple, 'ranch': ranch})
 
 def add_lot(request, ranch_id):
     ranch = get_object_or_404(Ranch, id=ranch_id)

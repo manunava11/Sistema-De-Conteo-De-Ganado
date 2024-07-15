@@ -3,7 +3,7 @@
 {% block ranch_content %}
 
 <ul class="list-group">
-    {% for pasture in pastures %}
+    {% for pasture, lots_data in pastures_with_lots %}
     <div class="card mb-3">
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
@@ -11,7 +11,7 @@
                 <small class="text-muted">{{ pasture.area }} Ha.</small>
             </div>
             <div>
-                {% if pasture.lot_set.exists %}
+                {% if lots_data %}
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#changeLotModal{{ pasture.id }}">
                     Change Lot
                 </button>
@@ -22,13 +22,15 @@
                 {% endif %}
             </div>
         </div>
-        {% if pasture.lot_set.exists %}
+        {% if lots_data %}
         <div class="card-body">
+            {% for lot, latest_cow_count in lots_data %}
             <h5 class="card-title">
-                <a href="{% url 'lot-detail' ranch_id=ranch.id lot_id=pasture.lot_set.first.id %}" class="text-decoration-none">{{ pasture.lot_set.first.name }}</a>
+                <a href="{% url 'lot-detail' ranch_id=ranch.id lot_id=lot.id %}" class="text-decoration-none">{{ lot.name }}</a>
             </h5>
-            <p class="card-text">Category: {{ pasture.lot_set.first.get_livestock_category_display }}</p>
-            <p class="card-text">Last Count: {{ pasture.lot_set.first.cow_count }}</p>
+            <p class="card-text">Category: {{ lot.get_livestock_category_display }}</p>
+            <p class="card-text">Last Count: {{ latest_cow_count }}</p>
+            {% endfor %}
         </div>
         {% endif %}
     </div>
