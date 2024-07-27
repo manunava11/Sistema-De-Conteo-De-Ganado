@@ -14,9 +14,17 @@
         <p class="card-text">Pasture: {{ lot.pasture.name }}</p>
         <p class="card-text">Cow Count: {{ latest_cow_count }}</p>
         <div class="flex-row pt-2">
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateCountModal{{ lot.id }}">
-                Update Count
-            </button>
+            <!--<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateCountModal{{ lot.id }}"></button>-->
+            <div class="btn-group">
+                <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    Update Count
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#updateManualCountModal{{ lot.id }}">Manual Count</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#updateVideoCountModal{{ lot.id }}">Video Count</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
@@ -60,12 +68,12 @@
     </div>
 </div>
 
-<!-- Change Cow Count Modal -->
-<div class="modal fade" id="updateCountModal{{ lot.id }}" tabindex="-1" aria-labelledby="updateCountModalLabel{{ lot.id }}" aria-hidden="true">
+<!-- Manual Change Cow Count Modal -->
+<div class="modal fade" id="updateManualCountModal{{ lot.id }}" tabindex="-1" aria-labelledby="updateManualCountModalLabel{{ lot.id }}" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="countModalLabel{{ lot.id }}">Update Count for {{ lot.name }}</h5>
+                <h5 class="modal-title" id="countManualModalLabel{{ lot.id }}">Update Count for {{ lot.name }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -74,7 +82,27 @@
                     {{ manual_count_form|crispy }}
                     <div class="d-flex justify-content-between mt-2">
                         <button type="submit" name="manual_count" class="btn btn-success">Submit Manual Count</button>
-                        <button type="submit" name="upload_video" class="btn btn-success">Submit Video</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Video Change Cow Count Modal -->
+<div class="modal fade" id="updateVideoCountModal{{ lot.id }}" tabindex="-1" aria-labelledby="updateVideoCountModalLabel{{ lot.id }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="countVideoModalLabel{{ lot.id }}">Update Count for {{ lot.name }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'lot-detail' ranch_id=ranch.id lot_id=lot.id %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ video_upload_form|crispy }}
+                    <div class="d-flex justify-content-between mt-2">
+                        <button type="submit" name="upload_video" class="btn btn-success">Submit Video Count</button>
                     </div>
                 </form>
             </div>

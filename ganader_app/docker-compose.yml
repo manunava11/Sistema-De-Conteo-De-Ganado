@@ -1,4 +1,4 @@
-version: "latest"
+version: '3.8'
 services:
  app:
   build: .
@@ -9,9 +9,6 @@ services:
    - 8000:8000
   image: app:django
   container_name: app
-#  command: >
-#   sh -c "python3 manage.py migrate && \
-#          python3 manage.py runserver 0.0.0.0:8000"
   environment:
    - DEBUG=1
    - DB_HOST=database
@@ -55,6 +52,14 @@ services:
   volumes:
    - ./webapp:/app
   container_name: celery
+  environment:
+    - DEBUG=1
+    - DB_HOST=database
+    - DB_NAME=django-dev-db
+    - DB_USER=devuser
+    - DB_PASS=devpassword123
+    - CELERY_BROKER=redis://redis:6379/0
+    - CELERY_BACKEND=redis://redis:6379/0  
   depends_on:
    - app
    - redis
