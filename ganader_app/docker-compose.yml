@@ -48,7 +48,7 @@ services:
 
  celery:
   build: .
-  command: celery --app=webapp worker --loglevel=info
+  command: celery --app=webapp worker --loglevel=info --concurrency=1 -Q queue1
   volumes:
    - ./webapp:/app
   container_name: celery
