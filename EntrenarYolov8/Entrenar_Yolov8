@@ -14,11 +14,11 @@ def main():
 
     # Entrenamiento del modelo
     try:
-        #model = YOLO("yolov8m.yaml")  # build a new model from scratch
+        #model = YOLO("yolov8m.pt")  # Pretrained Modelo
         #model = YOLO("EntrenarYolov8\SantaIsabel.pt")  # load a pretrained model (recommended for training)
-        model = YOLO(r"yolov8m.yaml").load(r"Sistema-De-Conteo-De-Ganado\EntrenarYolov8\lastYolov8m.pt")  # build from YAML and transfer weights
+        model = YOLO(r"yolov8m.yaml").load(r"Sistema-De-Conteo-De-Ganado\EntrenarYolov8\Yolov8m70E.pt")  # build from YAML and transfer weights
         #results = model.train(resume=True)
-        model.train(data=r"C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\EntrenarYolov8\config.yaml",batch=0.9,device='cuda', epochs=200, patience=50)
+        model.train(data=r"C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\EntrenarYolov8\config.yaml",batch=0.9,device='cuda', epochs=130)
     except Exception as e:
         print(f"Error during training: {e}")
 

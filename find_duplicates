@@ -1,0 +1,20 @@
+import os
+
+def find_duplicates(train_dir, val_dir):
+    train_files = set(os.listdir(train_dir))
+    val_files = set(os.listdir(val_dir))
+    
+    duplicates = train_files.intersection(val_files)
+    
+    if duplicates:
+        print("Archivos duplicados encontrados:")
+        for file in duplicates:
+            print(file)
+    else:
+        print("No se encontraron archivos duplicados.")
+
+# Especifica las rutas de tus carpetas "train" y "val"
+train_directory = r"C:\Users\Manuel\Desktop\Test\imagex"
+val_directory = r"C:\Users\Manuel\Desktop\FotosNuestras\train"
+
+find_duplicates(train_directory, val_directory)

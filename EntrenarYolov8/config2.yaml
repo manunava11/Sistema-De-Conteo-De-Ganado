@@ -1,6 +1,6 @@
-path: C:\Users\Manuel\Desktop\
-train: DataCompleto
-val: DataCompleto
+path: C:\Users\Manuel\Desktop\Test
+train: imagex
+val: imagex
 nc: 1
 
 # Clases

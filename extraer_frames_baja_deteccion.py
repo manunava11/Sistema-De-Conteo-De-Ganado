@@ -4,7 +4,7 @@ from ultralytics import YOLO
 import os
 
 # Ruta del video
-video_path = r'C:\Users\Manuel\Desktop\Carpeta Visual\Videoide\DJI_0262 (40m).MP4'
+video_path = r'C:\Users\Manuel\Desktop\Carpeta Visual\Videoide\DJI_0264.MP4'
 # Ruta donde se guardarán los frames
 output_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\FramesNewTrain'
 
@@ -14,7 +14,7 @@ os.makedirs(output_folder, exist_ok=True)
 device = 'cuda' if torch.cuda.is_available() else 'cpu'  # tener cuda instalado (11.8) y drivers actualizados
 print(f"Using device: {device}")
 # Cargar el modelo YOLOv8
-model = YOLO(r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\EntrenarYolov8\SantaIsabel.pt').to(device)
+model = YOLO(r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\EntrenarYolov8\BestNuestrasN.pt').to(device)
 video_name = os.path.splitext(os.path.basename(video_path))[0]
 # Abrir el video
 cap = cv2.VideoCapture(video_path)

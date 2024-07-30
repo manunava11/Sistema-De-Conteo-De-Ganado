@@ -1,0 +1,25 @@
+from PIL import Image
+import os
+
+# Directorio donde se encuentran las imágenes
+input_dir = r"C:\Users\Manuel\Desktop\roboflow\valid\images"
+# Directorio donde se guardarán las imágenes redimensionadas
+output_dir = r"C:\Users\Manuel\Desktop\roboflow\valid\images4k"
+
+# Crear el directorio de salida si no existe
+os.makedirs(output_dir, exist_ok=True)
+
+# Dimensiones de 4K
+width, height = 3840, 2160
+
+# Recorrer todas las imágenes en el directorio de entrada
+for filename in os.listdir(input_dir):
+    if filename.endswith(('.png', '.jpg', '.jpeg', '.bmp', '.tiff')):
+        # Abrir la imagen
+        img = Image.open(os.path.join(input_dir, filename))
+        # Redimensionar la imagen
+        img_resized = img.resize((width, height), Image.LANCZOS)
+        # Guardar la imagen redimensionada en el directorio de salida
+        img_resized.save(os.path.join(output_dir, filename))
+
+print("Redimensionamiento completado.")

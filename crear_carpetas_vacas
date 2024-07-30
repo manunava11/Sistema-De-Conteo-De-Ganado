@@ -1,15 +1,15 @@
 import os
 
 # Especifica la ruta donde deseas crear las carpetas
-ruta = r'C:\Users\Manuel\Desktop\Carpeta Visual\Data_SantaIsa_Dia1_Mañana'
+ruta = r'C:\Users\Manuel\Desktop\Carpeta Visual\Data_SantaIsa_Dia1_Tarde'
 
 # Asegúrate de que la ruta exista
 if not os.path.exists(ruta):
     os.makedirs(ruta)
 
 # Crear carpetas para cada vaca
-for i in range(1, 218):
-    nombre_carpeta = "DJIMini3Pro_Campo4_Dia1_Mañana"+f'cow{i}'
+for i in range(1, 243):
+    nombre_carpeta = "1_4_1_1_"+f'Cow{i}' # 1 = Dron , 4 = ID Campo, 1 = Nro de dia (dia 1), 1 = Tarde (Mañana es 0)
     ruta_carpeta = os.path.join(ruta, nombre_carpeta)
     os.makedirs(ruta_carpeta, exist_ok=True)
 
