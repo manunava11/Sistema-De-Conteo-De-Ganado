@@ -8,12 +8,12 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print(f"Using device: {device}")
 
 # Cargar el modelo YOLOv8 entrenado (best.pt)
-model_path = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\EntrenarYolov8\PesadaIsa.pt'
+model_path = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\EntrenarYolov8\BestNuestrasX.pt'
 model = YOLO(model_path).to(device)
 
 # Carpeta de entrada y salida
-input_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\Dia1IsabelVideos'
-output_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\VideosRecortadosDia1Isabel'
+input_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\Dia2Tarde'
+output_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\ProcesadosDia2Tarde'
 
 # Crear la carpeta de salida si no existe
 Path(output_folder).mkdir(parents=True, exist_ok=True)
@@ -30,7 +30,7 @@ for file_name in files:
         # Procesar imágenes
         image = cv2.imread(file_path)
         # Redimensionar la imagen a 4K (3840x2160)
-        resized_image = cv2.resize(image, (2720, 1530))
+        resized_image = cv2.resize(image, (3840, 2160))
         results = model(resized_image)
         for result in results:
             # Filtrar las detecciones con una confianza mayor a 0.8

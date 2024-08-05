@@ -3,7 +3,7 @@ import shutil
 import random
 from pathlib import Path
 
-def split_dataset(dataset_dir, output_dir, train_ratio=0.7, seed=42):
+def split_dataset(dataset_dir, output_dir, train_ratio=0.7, seed=23):
     random.seed(seed)
     
     dataset_path = Path(dataset_dir)
@@ -51,4 +51,4 @@ def split_dataset(dataset_dir, output_dir, train_ratio=0.7, seed=42):
     print(f'Dataset split completed. Train: {train_path}, Validation: {val_path}')
 
 # Example usage
-split_dataset(r'C:\Users\Manuel\Desktop\NuevoTrainVal', r'C:\Users\Manuel\Desktop\CarpetaNuevoTrainVal')
+split_dataset(r'C:\Users\Manuel\Desktop\EtiquetadosLuis\images', r'C:\Users\Manuel\Desktop\FotosNuestras')

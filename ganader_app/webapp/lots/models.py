@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from ranch.models import Ranch
-from pastures.models import Pasture 
+from pastures.models import Pasture
 
 class Lot(models.Model):
     CATEGORY_CHOICES = [
@@ -19,7 +19,6 @@ class Lot(models.Model):
         choices=CATEGORY_CHOICES,
         default='terneros',
     )
-    cow_count = models.IntegerField(default=0)
     ranch = models.ForeignKey(Ranch, on_delete=models.CASCADE)
     pasture = models.ForeignKey(Pasture, null=True, blank=True, on_delete=models.SET_NULL)
 

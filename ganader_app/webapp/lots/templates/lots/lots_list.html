@@ -1,15 +1,17 @@
 {% extends "ranch/ranch_base.html" %}
 
 {% block ranch_content %}
-  <div class="mb-3"> <!-- Added a margin-bottom to separate the list from the button -->
+  <div class="mb-3">
     <ul class="list-group">
-        {% for lot in lots %}
+        {% for lot, cow_count in lots_tuple %}
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 <div class="d-flex flex-row align-items-center">
-                    <span class="ml-2">{{ lot.name }}</span>
+                    <span class="ml-2">
+                        <a href="{% url 'lot-detail' ranch_id=ranch.id lot_id=lot.id %}">{{ lot.name }}</a>
+                    </span>
                 </div>
-                <small>{{ lot.livestock_category }}</small>
-                <small class="text-muted">Lot count {{ lot.cow_count }}</small>
+                <small>{{ lot.get_livestock_category_display }}</small>
+                <small class="text-muted">Lot count: {{ cow_count }}</small>
             </li>
         {% endfor %}
     </ul>
