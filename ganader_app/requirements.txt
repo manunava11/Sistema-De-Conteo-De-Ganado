@@ -9,3 +9,11 @@ psycopg2==2.9.5
 gunicorn==22.0.0
 celery==5.4.0
 redis==5.0.4
+opencv-python==4.8.0.76
+ultralytics==8.2.65
+torch==2.0.1
+numpy<2.0
+transformers
+huggingface_hub
+shapely==2.0.5
+#django-celery-results

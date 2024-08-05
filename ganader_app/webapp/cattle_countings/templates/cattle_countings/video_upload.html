@@ -1,0 +1,10 @@
+{% extends "ranch/ranch_base.html" %}
+
+{% block ranch_content %}
+  <h2>Upload Video for {{ lot.name }}</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Upload</button>
+  </form>
+{% endblock %}
