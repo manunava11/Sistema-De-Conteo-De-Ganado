@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #'django_celery_results',
+    #'celery_progress',
 ]
 
 MIDDLEWARE = [
@@ -168,6 +170,8 @@ CELERY_TASK_QUEUES = {
         'routing_key': 'default',
     },
 }
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 104857600  # 100MB
 FILE_UPLOAD_MAX_MEMORY_SIZE = 104857600  # 100MB

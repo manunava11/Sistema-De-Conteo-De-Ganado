@@ -24,6 +24,13 @@ COPY ./webapp /app
 
 WORKDIR /app
 
+# Ensure the model folder exists
+RUN mkdir -p model
+
+# Copy the download script into the container
+COPY ./import_model.py /import_model.py
+
+# Copy the entrypoint script into the container
 COPY ./entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh

@@ -6,9 +6,12 @@ import cv2
 import os
 from ultralytics import YOLO, solutions
 import torch
+#from celery_progress.backend import ProgressRecorder
 
 @shared_task
 def process_video(video_id, cow_count_id):
+    #progress_recorder = ProgressRecorder(self)
+    
     # Fetch the video and cow count from the database
     video = UploadedVideo.objects.get(id=video_id)
     cow_count = CowCount.objects.get(id=cow_count_id)
@@ -20,7 +23,7 @@ def process_video(video_id, cow_count_id):
     print(f"Using device: {device}")
 
     # Load the model
-    model = YOLO('/app/cattle_countings/cattle_v8x.pt').to(device)
+    model = YOLO('/app/model/cattle_v8x.pt').to(device)
 
     # Open the video
     cap = cv2.VideoCapture(video_input_path)
@@ -76,6 +79,8 @@ def process_video(video_id, cow_count_id):
 
         # Write the processed frame to the output video
         video_writer.write(im0)
+
+        #progress_recorder.set_progress()
 
     # Release resources
     cap.release()

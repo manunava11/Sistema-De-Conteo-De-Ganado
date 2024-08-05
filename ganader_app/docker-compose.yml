@@ -16,7 +16,7 @@ services:
    - DB_USER=devuser
    - DB_PASS=devpassword123
    - CELERY_BROKER=redis://redis:6379/0
-   - CELERY_BACKEND=redis://redis:6379/0   
+   - CELERY_BACKEND=redis://redis:6379/0
   depends_on:
    - redis
    - database
