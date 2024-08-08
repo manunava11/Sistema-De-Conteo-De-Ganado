@@ -1,13 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Lot, Ranch
-from cattle_countings.models import CowCount
+from cattle_countings.models import CowCount, UploadedVideo
 from .forms import LotForm, CowCountForm
 from cattle_countings.forms import ManualCountForm, VideoUploadForm
 from datetime import datetime
 from cattle_countings.tasks import process_video
-
-
-#import cv2  # Uncomment this if you need to use OpenCV
+from django_celery_results.models import TaskResult
+from django.http import JsonResponse
+from celery.result import AsyncResult
 
 def lot_list(request, ranch_id):
     ranch = get_object_or_404(Ranch, id=ranch_id)
@@ -59,8 +59,8 @@ def lot_detail(request, ranch_id, lot_id):
                 manual_count.pasture = lot.pasture
                 manual_count.method = 'Manual'
                 manual_count.save()
-
                 return redirect('lot-detail', ranch_id=ranch_id, lot_id=lot.id)
+
         elif 'upload_video' in request.POST:
             video_upload_form = VideoUploadForm(request.POST, request.FILES)
             if video_upload_form.is_valid():
@@ -75,10 +75,17 @@ def lot_detail(request, ranch_id, lot_id):
                 )
                 video_upload.cow_count = cow_count_record
                 video_upload.save()
-
                 return redirect('lot-detail', ranch_id=ranch_id, lot_id=lot.id)
 
     lot_form = LotForm(instance=lot)
+
+    # Fetch ongoing tasks' statuses
+    #ongoing_tasks = {}
+    for video in UploadedVideo.objects.filter(cow_count__lot=lot):
+        if video.task_id:
+            #result = AsyncResult(video.task_id)
+            task_id = video.task_id
+            #ongoing_tasks[video.task_id] = result.status
 
     context = {
         'lot': lot,
@@ -88,6 +95,8 @@ def lot_detail(request, ranch_id, lot_id):
         'lot_form': lot_form,
         'ranch': ranch,
         'latest_cow_count': latest_cow_count,
+        #'tasks_info': ongoing_tasks,
+        'task_id': task_id,
     }
 
     return render(request, 'lots/lot_detail.html', context)

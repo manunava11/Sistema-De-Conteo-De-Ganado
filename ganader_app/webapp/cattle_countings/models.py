@@ -21,6 +21,7 @@ class UploadedVideo(models.Model):
     uploaded_at = models.DateTimeField(auto_now_add=True)
     processed_at = models.DateTimeField(null=True, blank=True)
     cow_count = models.OneToOneField('CowCount', on_delete=models.CASCADE, related_name='video', null=True, blank=True)
+    task_id = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return f"Video {self.id} - Uploaded at {self.uploaded_at}"

@@ -6,4 +6,6 @@ from cattle_countings.tasks import process_video
 @receiver(post_save, sender=UploadedVideo)
 def video_uploaded(sender, instance, created, **kwargs):
     if created and instance.processed_at is None:  # Only trigger if the video is newly created and not processed
-        process_video.delay(instance.id, instance.cow_count.id)
+        result = process_video.delay(instance.id, instance.cow_count.id)
+        instance.task_id = result.task_id
+        instance.save()

@@ -6,11 +6,11 @@ import cv2
 import os
 from ultralytics import YOLO, solutions
 import torch
-#from celery_progress.backend import ProgressRecorder
+from celery_progress.backend import ProgressRecorder
 
-@shared_task
-def process_video(video_id, cow_count_id):
-    #progress_recorder = ProgressRecorder(self)
+@shared_task(bind=True)
+def process_video(self, video_id, cow_count_id):
+    progress_recorder = ProgressRecorder(self)
     
     # Fetch the video and cow count from the database
     video = UploadedVideo.objects.get(id=video_id)
@@ -30,7 +30,7 @@ def process_video(video_id, cow_count_id):
     assert cap.isOpened(), "Error reading video file"
 
     # Get video properties
-    w, h, fps = (int(cap.get(x)) for x in (cv2.CAP_PROP_FRAME_WIDTH, cv2.CAP_PROP_FRAME_HEIGHT, cv2.CAP_PROP_FPS))
+    w, h, fps, fcount = (int(cap.get(x)) for x in (cv2.CAP_PROP_FRAME_WIDTH, cv2.CAP_PROP_FRAME_HEIGHT, cv2.CAP_PROP_FPS, cv2.CAP_PROP_FRAME_COUNT))
 
     # Define region points
     region_points = [(0, 0), (0, h), (w, h), (w, 0)]
@@ -60,7 +60,7 @@ def process_video(video_id, cow_count_id):
 
     # Total object count
     total_count = 0
-
+    i = 0
     # Process the video
     while cap.isOpened():
         success, im0 = cap.read()
@@ -68,6 +68,8 @@ def process_video(video_id, cow_count_id):
             print("Video frame is empty or video processing has been successfully completed.")
             break
 
+        progress_recorder.set_progress(i, fcount, f'Frame {i} of {fcount}')
+        i+=1
         # Perform tracking with the model
         tracks = model.track(im0, persist=True, show=False, conf=0.7, iou=0.4, tracker="bytetrack.yaml")
 
@@ -79,8 +81,6 @@ def process_video(video_id, cow_count_id):
 
         # Write the processed frame to the output video
         video_writer.write(im0)
-
-        #progress_recorder.set_progress()
 
     # Release resources
     cap.release()
